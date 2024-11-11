@@ -27,18 +27,18 @@ html, body {
     flex-direction: column; /* Arrange children in a column */
     /*justify-content: none; /* Center vertically */
     align-items: center; /* Center horizontally */
-    height: 100vh; /* Use full viewport height */
+    height: 200vh; /* Use full viewport height */
     /*text-align: center; /* Center text within the container */
-    padding: 20px; /* Optional: Add some padding */
+    padding: 200px; /* Optional: Add some padding */
 }
 .page-container3 {
     display: flex; /* Enable flexbox */
     flex-direction: column; /* Arrange children in a column */
     /*justify-content: none; /* Center vertically */
     align-items: center; /* Center horizontally */
-    height: 100vh; /* Use full viewport height */
+    height: 200vh; /* Use full viewport height */
     /*text-align: center; /* Center text within the container */
-    padding: 20px; /* Optional: Add some padding */
+    padding: 200px; /* Optional: Add some padding */
 }
 
 .info-box {

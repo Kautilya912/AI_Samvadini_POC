@@ -1,38 +1,36 @@
 ﻿@page "/"
 
 <div class="page-container">
-    <div class="heading-left">
-        <div class="home-page-content">
-            <div class="logo-image">
-                <img src="../favicon.png" class="favicon" alt="C# Corner" />
-            </div>
-            <div class="heading">
-                <h2 class="main-text">AI Samvadini <span class="sub-text">C# Corner</span></h2>
-            </div>
-        </div>
+<!--  <img src=""icon.png"" alt="C# icon">
+      <link rel="img" type="image/png" href="icon.png" /> -->
 
-        <div class="text">
-            <p id="namaste">Namaskaram 🙏</p>
-            <p>
-                Welcome to AI Samvadini! 👏 AI Samvadini is your persnal interviewer powered by Generative AI that conducts interview.
-                You can upload your resume and enter job profile, and AI Samvadini will ask you customized questions.</p>
-        </div>
+    <h2>Greeting...</h2>
+    <p>Welcome to Sharp Samvadini! Sharp Samvadini is your personal interviewer powered by generative AI that conducts interview.</p>
 
-        <div class="interview-guidelines">
-            <h2>Interview Guidelines</h2>
-            <p>📚In this Interview, the AI Samvadini will review your resume and discuss your past experiences.<br />
-            Note: Try to give clear answer in minimum words!</p>
-
-            <ul>
-                <li>Each Interview will take arount 15 mins.</li>
-                <li>Do not refresh the page during the interview.</li>
-                <li>Choose your favourite Interaction style Chat/Voice</li>
-                <li>Start introduce yourself and enjot!.</li>
-            </ul>
-        </div>
+    <div class="info-box">
+        <h4>Interview Guideline</h4>
+        <p>
+            In this interview, the Sharp Samvadini will review your resume and discuss your past experiences.
+            <br />Note: Try to give clear answers in minimum words!
+        </p>
+        <ul>
+            <li>Please choose any one mode of the interview i.e Mock Interview or Interview.</li>
+            <li>Don't refresh the page while giving the Interview'</li>
+            <li>Please upload your resume before starting the interview.</li>
+            <li>Each interview will take around 15 mins.</li>
+            <li>Do not refresh the page during the interview.</li>
+            <li>Choose your favorite interaction style (chat/voice).</li>
+            <li>Start introducing yourself and enjoy!</li>
+        </ul>
     </div>
 
+    <!-- <button @onclick="StartInterview">Start Interview!</button> -->
 </div>
 
 @code {
+    private void StartInterview()
+    {
+        // Navigate to Interview Page or start Interview logic.
+        // NavigationManager.NavigateTo("/interview");
+    }
 }
