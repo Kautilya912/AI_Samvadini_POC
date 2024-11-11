@@ -1,0 +1,150 @@
+﻿@page "/interview"
+ 
+@inject HttpClient Http
+@using System.Text.Json
+
+<PageTitle>Mock Interview with AI</PageTitle>
+<div class="page-container1"> 
+
+<!-- Dropdown for selecting position -->
+<div class="page-container2">
+<select @onchange="OnProfileSelected" class="form-select">
+    <option value="">Select your profile</option>
+    <option value="resume">Go with resume</option>
+    <option value="software">Software Engineer</option>
+    <option value="uiux">UI/UX</option> 
+    <option value="ai">AI Developer</option> 
+    <option value="data">Data Analyst</option>
+    <option value="marketing">Marketing</option>
+    <option value="bda">BDA</option>
+</select>
+</div>
+
+<!-- File upload for resume -->
+<div class="page-container3">
+<InputFile OnChange="OnFileUpload" class="form-control" />
+</div>
+<br />
+
+
+<!-- AI Feedback button 
+<button class="btn btn-primary" @onclick="GetFeedback">Get Feedback</button>
+
+ AI Guideline button 
+<button class="btn btn-secondary" @onclick="GetGuideline">Show Guideline</button> -->
+
+<!-- Checkbox for voice input -->
+<input type="checkbox" @bind="useVoice" /> I would like to speak with AI Samvadini!
+
+<!-- Text input for user's answer -->
+@if (!useVoice)
+{
+    <input @bind="userAnswer" class="form-control" placeholder="Type your answer..." />
+}
+
+
+<!-- Submit button -->
+<button class="btn btn-success" @onclick="SubmitAnswer">Submit</button>
+</div>
+<!-- Chat display -->
+<div class="chat-history">
+    @foreach (var message in interviewHistory)
+    {
+        <div class="message @message.Origin">
+            <strong>@message.Origin:</strong> @message.Content
+        </div>
+    }
+</div>
+ 
+@code {
+    private string selectedPosition = "";
+    private IBrowserFile resumeFile;
+    private List<Message> interviewHistory = new List<Message>();
+    private bool useVoice = false;
+    private string userAnswer = "";
+    private int tokenCount = 0;
+
+    public class Message
+    {
+        public string Origin { get; set; } // "human" or "ai"
+        public string Content { get; set; }
+    }
+
+    private void OnProfileSelected(ChangeEventArgs e)
+    {
+        selectedPosition = e.Value.ToString();
+    }
+
+    private async Task OnFileUpload(InputFileChangeEventArgs e)
+    {
+        resumeFile = e.File;
+        if (resumeFile != null && resumeFile.ContentType == "application/pdf")
+        {
+            using var stream = resumeFile.OpenReadStream();
+            var text = await ExtractTextFromPdfAsync(stream);
+            interviewHistory.Add(new Message { Origin = "ai", Content = "Resume uploaded successfully!" });
+        }
+    }
+
+    private async Task<string> ExtractTextFromPdfAsync(Stream pdfStream)
+    {
+        // Example PDF extraction logic (Replace with actual PDF processing)
+        return await Task.FromResult("Extracted text from PDF");
+    }
+
+    private async Task GetFeedback()
+    {
+        var feedback = await CallOpenAiApi("Please give evaluation regarding the interview");
+        interviewHistory.Add(new Message { Origin = "ai", Content = feedback });
+    }
+
+    private async Task GetGuideline()
+    {
+        var guideline = await CallOpenAiApi("Create an interview guideline and prepare two questions for each topic.");
+        interviewHistory.Add(new Message { Origin = "ai", Content = guideline });
+    }
+
+    private async Task SubmitAnswer()
+    {
+        if (string.IsNullOrWhiteSpace(userAnswer)) 
+        {
+            interviewHistory.Add(new Message { Origin = "ai", Content = "Please provide an answer before submitting." });
+            return;
+        }
+
+        interviewHistory.Add(new Message { Origin = "human", Content = userAnswer });
+
+        // Call OpenAI for an answer
+        var aiResponse = await CallOpenAiApi(userAnswer);
+        interviewHistory.Add(new Message { Origin = "ai", Content = aiResponse });
+        userAnswer = ""; // Reset answer input
+    }
+
+    private async Task<string> CallOpenAiApi(string prompt)
+    {
+        var apiUrl = "https://api.openai.com/v1/chat/completions";
+        var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);
+
+        var requestBody = new
+        {
+            model = "gpt-3.5-turbo",
+            messages = new[]
+            {
+                new { role = "system", content = "You are an interviewer." },
+                new { role = "user", content = prompt }
+            }
+        };
+
+        request.Content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
+        request.Headers.Add("Authorization", "Bearer YOUR_API_KEY");
+
+        var response = await Http.SendAsync(request);
+        var result = await response.Content.ReadAsStringAsync();
+
+        // Extract AI response from the result (assuming the API returns the response in `choices` field)
+        var responseJson = JsonDocument.Parse(result);
+        return responseJson.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+    }
+}
+
+
