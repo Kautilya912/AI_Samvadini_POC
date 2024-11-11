@@ -1,0 +1,59 @@
+﻿.heading-left {
+    width: 80%;
+    margin: 10% auto;
+}
+
+.favicon {
+    width: 40%;
+}
+
+.logo-image {
+    width: 30%;
+    height: 100%;
+}
+
+
+.home-page-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+}
+
+.main-text {
+    font-size: 4rem;
+    color: #ffffff;
+}
+
+.sub-text {
+    color: #2e9bf5;
+    font-size: 2.5rem;
+}
+
+.text p {
+    color: #ffffff;
+    font-size: 1.1rem;
+}
+
+#namaste {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-weight:bold;
+}
+
+.interview-guidelines {
+    padding:2.5rem;
+    background-color: #172d43;
+    color: #c7ebff;
+    border-radius: 1rem;
+}
+
+.interview-guidelines h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom:1.2rem;
+}
+
+.interview-guidelines p {
+    font-size: 1.1rem;
+}
